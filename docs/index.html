@@ -41,13 +41,15 @@
   .hero-art{
     position:absolute;right:0;top:50%;
     transform:translateY(-50%);
-    width:min(520px,60vw);height:auto;
+    width:min(520px,58vw);height:auto;
     aspect-ratio:1/1;
-    max-width:60vw;
+    object-fit:cover;
+    border-radius:12px;
     pointer-events:none;
-    opacity:.85;
+    opacity:.92;
+    box-shadow:0 0 80px rgba(224,179,108,.18);
   }
-  @media(max-width:900px){ .hero-art{display:none;} }
+  @media(max-width:900px){ .hero-art{width:min(360px,52vw);opacity:.35;} }
   .kicker{
     font-size:13px;letter-spacing:4px;
     color:var(--gold);
@@ -251,25 +253,7 @@
 
 <!-- ===== Hero ===== -->
 <header class="hero">
-  <svg class="hero-art" viewBox="0 0 520 520" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <radialGradient id="glow" cx="50%" cy="46%" r="50%">
-        <stop offset="0%" stop-color="#F4EFE2" stop-opacity="0.9"/>
-        <stop offset="35%" stop-color="#E0B36C" stop-opacity="0.45"/>
-        <stop offset="100%" stop-color="#E0B36C" stop-opacity="0"/>
-      </radialGradient>
-    </defs>
-    <circle cx="260" cy="240" r="200" fill="url(#glow)"/>
-    <ellipse cx="260" cy="330" rx="95" ry="130" fill="#14100B"/>
-    <ellipse cx="260" cy="330" rx="95" ry="130" fill="none" stroke="#3D4A40" stroke-width="1.2" stroke-dasharray="3 6"/>
-    <circle cx="260" cy="210" r="6" fill="#F4EFE2"/>
-    <circle cx="150" cy="150" r="2.5" fill="#E0B36C"/>
-    <circle cx="380" cy="130" r="2" fill="#E0B36C"/>
-    <circle cx="120" cy="330" r="2" fill="#E0B36C"/>
-    <circle cx="400" cy="360" r="3" fill="#E0B36C"/>
-    <circle cx="210" cy="100" r="1.8" fill="#F4EFE2"/>
-    <circle cx="340" cy="250" r="1.5" fill="#F4EFE2"/>
-  </svg>
+  <img class="hero-art" src="assets/hero.jpg" alt="暖光从记忆的信封中涌出，一个人静静望向光" aria-hidden="true">
   <div class="wrap">
     <p class="kicker">MEMORY LIGHT BOX</p>
     <h1 class="serif">忆光匣</h1>
