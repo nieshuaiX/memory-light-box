@@ -8,794 +8,248 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2314100B'/%3E%3Ccircle cx='32' cy='26' r='16' fill='%23E0B36C' opacity='0.9'/%3E%3Cellipse cx='32' cy='42' rx='12' ry='16' fill='%2314100B'/%3E%3C/svg%3E">
 <style>
   :root{
-    --ink:#14100B;      /* 底 */
-    --ink2:#1C1710;     /* 次级面 */
-    --cream:#F4EFE2;    /* 主文字 */
-    --warm:#EDE7D8;
-    --gold:#E0B36C;     /* 强调 */
-    --gold-dim:rgba(224,179,108,.14);
-    --sage:#3D4A40;
-    --muted:#B8A88F;
-    --danger:#C96A5B;
-    --line:rgba(224,179,108,.16);
+    --bg:#14100B;--bg2:#1C1710;--panel:#211A12;--text:#F4EFE2;--text2:#EDE7D8;
+    --gold:#E0B36C;--gold-dim:rgba(224,179,108,.14);--sage:#3D4A40;--muted:#B8A88F;
+    --danger:#C96A5B;--line:rgba(224,179,108,.16);--card-bg:rgba(255,255,255,.03);
+    --input-bg:rgba(255,255,255,.04);--glow-soft:rgba(224,179,108,.10);--env-soft:#8FBF8F;
+  }
+  html[data-theme="light"]{
+    --bg:#F4EFE2;--bg2:#EDE7D8;--panel:#FFFDF7;--text:#2A241C;--text2:#3A322A;
+    --gold:#A97B2F;--gold-dim:rgba(169,123,47,.13);--sage:#5A6B58;--muted:#8A7A63;
+    --danger:#B05A4B;--line:rgba(169,123,47,.22);--card-bg:rgba(42,36,28,.04);
+    --input-bg:rgba(42,36,28,.05);--glow-soft:rgba(169,123,47,.12);--env-soft:#4E7A4E;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
-    background:
-      radial-gradient(1200px 600px at 78% -8%, rgba(224,179,108,.10), transparent 60%),
-      var(--ink);
-    color:var(--warm);
+    background:radial-gradient(1200px 600px at 78% -8%, var(--glow-soft), transparent 60%), var(--bg);
+    color:var(--text2);
     font-family:"Source Han Sans SC","思源黑体","PingFang SC","Microsoft YaHei",sans-serif;
-    line-height:1.7;
-    -webkit-font-smoothing:antialiased;
-    min-height:100vh;
+    line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;
+    transition:background .4s ease, color .4s ease;
   }
   ::selection{background:rgba(224,179,108,.35);}
-
-  /* ===== 全局演示角标 ===== */
-  .demo-badge{
-    position:fixed;top:14px;left:14px;z-index:60;
-    display:inline-flex;align-items:center;gap:7px;
-    padding:6px 12px;
-    border:1px solid rgba(201,106,91,.45);
-    border-radius:999px;
-    background:rgba(20,16,11,.88);
-    color:#E8B4A8;font-size:12px;letter-spacing:1.5px;
-    backdrop-filter:blur(6px);
-  }
-  .demo-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--danger);}
-  .top-link{
-    position:fixed;top:14px;right:14px;z-index:60;
-    color:var(--muted);font-size:12px;text-decoration:none;
-    padding:8px 10px;border-radius:8px;letter-spacing:1px;
-  }
-  .top-link:hover{color:var(--gold);}
-
-  /* ===== 舞台 ===== */
-  .stage{
-    max-width:430px;
-    margin:0 auto;
-    padding:88px 16px 56px;
-    min-height:100vh;
-  }
-  @media(min-width:768px){
-    .stage{max-width:560px;padding-top:104px;}
-  }
-  .card{
-    background:var(--ink2);
-    border:1px solid var(--line);
-    border-radius:18px;
-    padding:26px 22px;
-    margin-bottom:16px;
-  }
-
-  /* ===== 通用 ===== */
-  .kicker{font-size:12px;letter-spacing:4px;color:var(--gold);margin-bottom:10px;}
-  h1{font-size:30px;color:var(--cream);font-weight:600;letter-spacing:3px;line-height:1.3;}
-  h2{font-size:21px;color:var(--cream);font-weight:600;letter-spacing:1px;}
   .serif{font-family:"Source Han Serif SC","思源宋体","Songti SC",Georgia,serif;}
   .muted{color:var(--muted);font-size:13px;}
   .small{font-size:12px;color:var(--muted);}
-
-  .notice{
-    background:var(--gold-dim);
-    border:1px dashed rgba(224,179,108,.4);
-    border-radius:10px;
-    padding:10px 14px;
-    font-size:12px;color:#D8C39A;
-    line-height:1.6;
+  .demo-badge{
+    position:fixed;top:14px;left:14px;z-index:60;
+    display:inline-flex;align-items:center;gap:7px;padding:6px 12px;
+    border:1px solid rgba(201,106,91,.45);border-radius:999px;
+    background:var(--bg2);color:var(--danger);font-size:12px;letter-spacing:1.5px;backdrop-filter:blur(6px);
   }
+  .demo-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--danger);}
+  .top-link{position:fixed;top:14px;right:14px;z-index:60;color:var(--muted);font-size:12px;text-decoration:none;padding:8px 10px;border-radius:8px;letter-spacing:1px;}
+  .top-link:hover{color:var(--gold);}
+  .stage{max-width:430px;margin:0 auto;padding:0 16px 56px;min-height:100vh;}
+  @media(min-width:768px){.stage{max-width:560px;}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px 22px;margin-bottom:16px;transition:background .4s ease,border-color .4s ease;}
+  .kicker{font-size:12px;letter-spacing:4px;color:var(--gold);margin-bottom:10px;}
+  h1{font-size:30px;color:var(--text);font-weight:600;letter-spacing:3px;line-height:1.3;}
+  h2{font-size:21px;color:var(--text);font-weight:600;letter-spacing:1px;}
+  .notice{background:var(--gold-dim);border:1px dashed rgba(224,179,108,.4);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--muted);line-height:1.6;}
   .notice b{color:var(--gold);font-weight:600;}
-
-  .btn{
-    display:block;width:100%;
-    text-align:center;
-    padding:14px 18px;
-    border-radius:12px;
-    font-size:15px;
-    letter-spacing:1px;
-    cursor:pointer;
-    border:none;
-    font-family:inherit;
-    transition:all .2s ease;
-    min-height:48px;
-  }
+  .btn{display:block;width:100%;text-align:center;padding:14px 18px;border-radius:12px;font-size:15px;letter-spacing:1px;cursor:pointer;border:none;font-family:inherit;transition:all .2s ease;min-height:48px;background:transparent;}
   .btn:active{transform:scale(.985);}
-  .btn-solid{background:var(--gold);color:var(--ink);font-weight:600;}
-  .btn-solid:hover{background:var(--cream);}
-  .btn-ghost{background:transparent;border:1px solid rgba(224,179,108,.45);color:var(--warm);}
+  .btn-solid{background:var(--gold);color:var(--bg);font-weight:600;}
+  .btn-solid:hover{filter:brightness(1.08);}
+  .btn-ghost{border:1px solid rgba(224,179,108,.45);color:var(--text2);}
   .btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
   .btn-row{display:flex;gap:10px;}
   .btn-row .btn{flex:1;}
-
   .field{margin-bottom:14px;}
   .field label{display:block;font-size:12px;color:var(--muted);letter-spacing:1px;margin-bottom:6px;}
-  .field input{
-    width:100%;
-    background:rgba(255,255,255,.04);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:12px 14px;
-    color:var(--cream);
-    font-size:16px;
-    font-family:inherit;
-  }
+  .field input{width:100%;background:var(--input-bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--text);font-size:16px;font-family:inherit;}
   .field input:focus{outline:none;border-color:var(--gold);}
-
   .divider{height:1px;background:var(--line);margin:20px 0;}
-
-  /* ===== 开始页 ===== */
+  .home-top{display:flex;align-items:center;justify-content:space-between;padding:96px 4px 0;}
+  .home-brand{font-size:12px;letter-spacing:3px;color:var(--gold);}
+  .home-brand b{font-weight:600;}
+  .theme-switch{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:12px;color:var(--muted);background:var(--card-bg);cursor:pointer;font-family:inherit;letter-spacing:1px;transition:all .2s ease;}
+  .theme-switch:hover{border-color:var(--gold);color:var(--gold);}
+  .theme-switch .sun,.theme-switch .moon{display:inline-block;width:13px;height:13px;}
+  html[data-theme="light"] .theme-switch .sun{display:none;}
+  html[data-theme="dark"] .theme-switch .moon{display:none;}
+  html[data-theme="dark"] .theme-switch .sun{display:inline-block;}
+  .hero-envelope{position:relative;text-align:center;padding:44px 0 30px;overflow:hidden;}
+  .env-wrap{position:relative;width:min(248px,68vw);margin:0 auto 22px;}
+  .env-glow{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:130%;height:130%;background:radial-gradient(circle,var(--gold-dim) 0%,rgba(224,179,108,0) 62%);pointer-events:none;}
+  .env-svg{position:relative;width:100%;height:auto;display:block;}
+  .env-spark{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px 2px rgba(224,179,108,.55);animation:sparkFloat 4.5s ease-in-out infinite;opacity:0;}
+  @keyframes sparkFloat{0%{opacity:0;transform:translateY(10px) scale(.6);}30%{opacity:.95;}70%{opacity:.7;}100%{opacity:0;transform:translateY(-26px) scale(1);}}
+  .home-title{font-size:clamp(36px,9vw,46px);color:var(--text);letter-spacing:8px;font-weight:600;line-height:1.2;}
+  .home-tagline{color:var(--gold);font-size:15px;letter-spacing:2px;margin:12px 0 8px;}
+  .home-sub{font-size:13px;color:var(--muted);letter-spacing:1px;}
+  .enter-btn{margin:26px auto 0;max-width:300px;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 30px;border-radius:999px;background:var(--gold);color:var(--bg);font-size:16px;letter-spacing:2px;font-weight:600;border:none;cursor:pointer;font-family:inherit;box-shadow:0 6px 26px -8px rgba(224,179,108,.55);transition:all .25s ease;}
+  .enter-btn:hover{transform:translateY(-2px);filter:brightness(1.08);}
+  .enter-btn:active{transform:scale(.985);}
+  .func-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:26px 0 8px;}
+  .func-item{display:flex;flex-direction:column;align-items:center;gap:7px;padding:14px 4px 12px;background:var(--card-bg);border:1px solid var(--line);border-radius:14px;cursor:pointer;font-family:inherit;color:var(--text2);transition:all .2s ease;}
+  .func-item:hover{border-color:var(--gold);background:var(--gold-dim);transform:translateY(-2px);}
+  .func-item .fi{width:34px;height:34px;border-radius:10px;background:var(--gold-dim);display:flex;align-items:center;justify-content:center;}
+  .func-item .ft{font-size:11px;letter-spacing:1px;color:var(--muted);}
+  .func-item:hover .ft{color:var(--gold);}
+  @media(max-width:420px){.func-item .ft{font-size:10px;}.func-item{padding:12px 2px 10px;}}
+  .box-sec{margin-top:30px;}
+  .box-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;}
+  .box-head h3{font-size:16px;color:var(--text);letter-spacing:2px;font-weight:600;}
+  .box-head .cnt{font-size:11px;color:var(--muted);letter-spacing:1px;}
+  .box-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .box-card{position:relative;text-align:left;padding:18px 16px 16px;background:var(--card-bg);border:1px solid var(--line);border-radius:16px;cursor:pointer;font-family:inherit;color:var(--text2);overflow:hidden;transition:all .2s ease;}
+  .box-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+  .box-card .bc-glow{position:absolute;right:-24px;top:-24px;width:90px;height:90px;background:radial-gradient(circle,var(--gold-dim),rgba(224,179,108,0) 70%);}
+  .box-card .bc-name{font-size:17px;color:var(--text);font-weight:600;letter-spacing:1px;}
+  .box-card .bc-meta{font-size:11px;color:var(--muted);margin-top:3px;}
+  .box-card .bc-badge{display:inline-block;margin-top:10px;font-size:10px;color:var(--gold);border:1px solid rgba(224,179,108,.4);border-radius:4px;padding:1px 6px;letter-spacing:1px;}
+  .box-card.new{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-style:dashed;color:var(--muted);min-height:118px;}
+  .box-card.new:hover{color:var(--gold);}
+  .box-card.new .plus{width:34px;height:34px;border-radius:50%;border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;}
+  .box-card.new .plus svg{width:16px;height:16px;}
+  .home-foot{text-align:center;margin-top:26px;padding-top:18px;border-top:1px solid var(--line);}
+  .home-foot a{color:var(--muted);font-size:12px;text-decoration:none;margin:0 8px;letter-spacing:1px;}
+  .home-foot a:hover{color:var(--gold);}
   .mode-list{display:flex;flex-direction:column;gap:10px;}
-  .mode-item{
-    display:flex;align-items:center;gap:14px;
-    padding:15px 16px;
-    background:rgba(255,255,255,.03);
-    border:1px solid var(--line);
-    border-radius:12px;
-    cursor:pointer;
-    transition:all .2s ease;
-    text-align:left;width:100%;font-family:inherit;
-    color:var(--warm);
-  }
+  .mode-item{display:flex;align-items:center;gap:14px;padding:15px 16px;background:var(--card-bg);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:all .2s ease;text-align:left;width:100%;font-family:inherit;color:var(--text2);}
   .mode-item:hover{border-color:var(--gold);background:var(--gold-dim);}
   .mode-item .icon{flex:0 0 38px;width:38px;height:38px;border-radius:10px;background:var(--gold-dim);display:flex;align-items:center;justify-content:center;}
-  .mode-item .txt h3{font-size:15px;color:var(--cream);font-weight:600;letter-spacing:.5px;}
+  .mode-item .txt h3{font-size:15px;color:var(--text);font-weight:600;letter-spacing:.5px;}
   .mode-item .txt p{font-size:12px;color:var(--muted);margin-top:2px;}
   .mode-item.reco{border-color:rgba(224,179,108,.55);}
-  .reco-tag{font-size:10px;color:var(--ink);background:var(--gold);border-radius:4px;padding:1px 6px;letter-spacing:1px;margin-left:6px;}
-
-  /* ===== 导入页 ===== */
-  .file-item{
-    display:flex;align-items:center;gap:12px;
-    padding:12px 14px;
-    background:rgba(255,255,255,.03);
-    border:1px solid var(--line);
-    border-radius:10px;
-    margin-bottom:8px;
-  }
+  .reco-tag{font-size:10px;color:var(--bg);background:var(--gold);border-radius:4px;padding:1px 6px;letter-spacing:1px;margin-left:6px;}
+  .file-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card-bg);border:1px solid var(--line);border-radius:10px;margin-bottom:8px;}
   .file-item .fi{flex:0 0 30px;width:30px;height:30px;border-radius:8px;background:var(--gold-dim);display:flex;align-items:center;justify-content:center;}
-  .file-item .fn{font-size:13px;color:var(--cream);}
+  .file-item .fn{font-size:13px;color:var(--text);}
   .file-item .fs{font-size:11px;color:var(--muted);margin-left:auto;}
-  .build-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin:18px 0 8px;}
+  .build-bar{height:6px;background:var(--card-bg);border-radius:3px;overflow:hidden;margin:18px 0 8px;}
   .build-bar i{display:block;height:100%;width:0%;background:var(--gold);border-radius:3px;transition:width .3s ease;}
   .build-tip{font-size:12px;color:var(--muted);text-align:center;min-height:20px;}
-
-  /* ===== 画像页 ===== */
   .profile-card{text-align:center;padding:30px 20px;}
-  .avatar{
-    width:86px;height:86px;margin:0 auto 16px;
-    border-radius:50%;
-    background:
-      radial-gradient(circle at 32% 28%, rgba(224,179,108,.5), rgba(224,179,108,.08) 60%),
-      var(--ink2);
-    border:1px solid var(--line);
-    display:flex;align-items:center;justify-content:center;
-  }
+  .avatar{width:86px;height:86px;margin:0 auto 16px;border-radius:50%;background:radial-gradient(circle at 32% 28%,rgba(224,179,108,.5),rgba(224,179,108,.08) 60%),var(--bg2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;}
   .avatar svg{width:44px;height:44px;}
   .profile-card h2{font-size:24px;}
   .profile-card .who{font-size:12px;color:var(--muted);letter-spacing:2px;margin:4px 0 16px;}
   .tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:8px;}
   .tag{font-size:12px;color:var(--gold);background:var(--gold-dim);border:1px solid rgba(224,179,108,.3);border-radius:999px;padding:4px 12px;}
   .profile-note{font-size:12px;color:var(--muted);margin-top:12px;}
-  .profile-note b{color:var(--warm);font-weight:500;}
-
-  /* ===== 对话页 ===== */
-  .chat-head{
-    display:flex;align-items:center;gap:12px;
-    padding:0 4px 16px;
-    border-bottom:1px solid var(--line);
-    margin-bottom:16px;
-  }
+  .profile-note b{color:var(--text2);font-weight:500;}
+  .chat-head{display:flex;align-items:center;gap:12px;padding:0 4px 16px;border-bottom:1px solid var(--line);margin-bottom:16px;}
   .chat-head .mini-av{width:38px;height:38px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:0 0 38px;}
-  .chat-head .nm{font-size:15px;color:var(--cream);font-weight:600;}
+  .chat-head .nm{font-size:15px;color:var(--text);font-weight:600;}
   .chat-head .st{font-size:11px;color:var(--sage);letter-spacing:1px;}
-  .chat-head .st.live{color:#8FBF8F;}
+  .chat-head .st.live{color:var(--env-soft);}
   .chat-head .back{margin-left:auto;font-size:12px;color:var(--muted);text-decoration:none;padding:8px;}
   .chat-head .back:hover{color:var(--gold);}
-
   .msgs{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
   .msg{max-width:84%;padding:11px 14px;border-radius:14px;font-size:14px;line-height:1.65;}
-  .msg.ta{align-self:flex-start;background:rgba(255,255,255,.05);border:1px solid var(--line);border-bottom-left-radius:4px;color:var(--warm);}
-  .msg.me{align-self:flex-end;background:var(--gold);color:var(--ink);border-bottom-right-radius:4px;}
+  .msg.ta{align-self:flex-start;background:var(--card-bg);border:1px solid var(--line);border-bottom-left-radius:4px;color:var(--text2);}
+  .msg.me{align-self:flex-end;background:var(--gold);color:var(--bg);border-bottom-right-radius:4px;}
   .msg.system{align-self:center;max-width:92%;background:transparent;color:var(--muted);font-size:12px;text-align:center;border:none;}
   .msg.script{color:#C9B48C;}
   .msg .cursor{display:inline-block;width:7px;animation:blink .9s steps(1) infinite;}
   @keyframes blink{50%{opacity:0;}}
   .msg.hidden{display:none;}
-
   .chat-input{display:flex;gap:8px;}
-  .chat-input input{
-    flex:1;
-    background:rgba(255,255,255,.04);
-    border:1px solid var(--line);
-    border-radius:12px;
-    padding:12px 14px;
-    color:var(--cream);
-    font-size:16px;
-    font-family:inherit;
-  }
+  .chat-input input{flex:1;background:var(--input-bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--text);font-size:16px;font-family:inherit;}
   .chat-input input:focus{outline:none;border-color:var(--gold);}
-  .chat-input .send{
-    flex:0 0 48px;height:48px;width:48px;
-    border-radius:12px;
-    background:var(--gold);border:none;color:var(--ink);
-    display:flex;align-items:center;justify-content:center;
-    cursor:pointer;
-  }
+  .chat-input .send{flex:0 0 48px;height:48px;width:48px;border-radius:12px;background:var(--gold);border:none;color:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;}
   .chat-input .send:disabled{opacity:.4;cursor:not-allowed;}
   .chat-hint{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;}
-
-  /* ===== 关键节点（分支选择） ===== */
-  .fork{
-    border:1px solid rgba(224,179,108,.5);
-    background:var(--gold-dim);
-    border-radius:14px;
-    padding:16px;
-    margin-bottom:16px;
-  }
+  .fork{border:1px solid rgba(224,179,108,.5);background:var(--gold-dim);border-radius:14px;padding:16px;margin-bottom:16px;}
   .fork .fk-t{font-size:13px;color:var(--gold);letter-spacing:2px;margin-bottom:6px;}
-  .fork .fk-d{font-size:13px;color:var(--warm);margin-bottom:12px;line-height:1.7;}
+  .fork .fk-d{font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.7;}
   .fork .fk-btns{display:flex;flex-direction:column;gap:8px;}
   .fork .fk-btns .btn{font-size:13px;padding:11px 14px;min-height:44px;text-align:left;display:flex;align-items:center;gap:8px;}
   .fork .fk-btns .btn .arrow{margin-left:auto;}
-
-  /* ===== 结局 ===== */
   .ending{text-align:center;padding:34px 20px 26px;}
   .ending .ey{font-size:13px;letter-spacing:4px;color:var(--gold);margin-bottom:10px;}
   .ending h2{font-size:25px;line-height:1.5;margin-bottom:14px;}
   .ending p{font-size:14px;color:var(--muted);max-width:330px;margin:0 auto 8px;line-height:1.8;}
-  .ending .mode-line{
-    margin-top:18px;padding:12px;border-radius:10px;
-    font-size:12px;line-height:1.7;
-  }
-  .ending .mode-line.fate{background:rgba(61,74,64,.25);border:1px solid rgba(61,74,64,.5);color:#B9C4B4;}
-  .ending .mode-line.rev{background:var(--gold-dim);border:1px solid rgba(224,179,108,.4);color:#D8C39A;}
+  .ending .mode-line{margin-top:18px;padding:12px;border-radius:10px;font-size:12px;line-height:1.7;}
+  .ending .mode-line.fate{background:rgba(61,74,64,.25);border:1px solid rgba(61,74,64,.5);color:var(--sage);}
+  .ending .mode-line.rev{background:var(--gold-dim);border:1px solid rgba(224,179,108,.4);color:var(--gold);}
   .ending .btn{margin-top:16px;}
-
-  /* ===== 回忆录 / 独白 ===== */
   .step-head{margin-bottom:14px;}
   .step-head .no{font-size:11px;color:var(--sage);letter-spacing:3px;margin-bottom:4px;}
-  .step-head h3{font-size:16px;color:var(--cream);font-weight:600;}
-  .q-box{
-    background:rgba(255,255,255,.04);
-    border:1px solid var(--line);
-    border-radius:12px;
-    padding:16px;
-    margin-bottom:14px;
-    font-size:14px;color:var(--warm);line-height:1.8;
-  }
+  .step-head h3{font-size:16px;color:var(--text);font-weight:600;}
+  .q-box{background:var(--card-bg);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;font-size:14px;color:var(--text2);line-height:1.8;}
   .q-box .qq{font-size:12px;color:var(--gold);letter-spacing:1px;margin-bottom:6px;}
-  .textarealine textarea{
-    width:100%;
-    background:rgba(255,255,255,.04);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:12px 14px;
-    color:var(--cream);
-    font-size:16px;
-    font-family:inherit;
-    min-height:86px;
-    resize:vertical;
-  }
+  .textarealine textarea{width:100%;background:var(--input-bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--text);font-size:16px;font-family:inherit;min-height:86px;resize:vertical;}
   .textarealine textarea:focus{outline:none;border-color:var(--gold);}
-  .saved-line{
-    display:none;
-    font-size:12px;color:#8FBF8F;
-    padding:8px 0 0;
-    letter-spacing:.5px;
-  }
+  .saved-line{display:none;font-size:12px;color:var(--env-soft);padding:8px 0 0;letter-spacing:.5px;}
   .saved-line.show{display:block;}
   .replay-tip{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;}
-
-  /* ===== toast ===== */
-  .toast{
-    position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);
-    background:rgba(20,16,11,.96);
-    border:1px solid var(--line);
-    color:var(--muted);
-    font-size:12px;letter-spacing:1px;
-    padding:10px 18px;border-radius:999px;
-    opacity:0;pointer-events:none;
-    transition:all .3s ease;
-    z-index:70;white-space:nowrap;
-  }
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg2);border:1px solid var(--line);color:var(--muted);font-size:12px;letter-spacing:1px;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:all .3s ease;z-index:70;white-space:nowrap;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-  @media(prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto;}
-    *{transition:none !important;animation:none !important;}
-    .msg .cursor{display:none;}
-  }
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}*{transition:none !important;animation:none !important;}.msg .cursor{display:none;}.env-spark{display:none;}}
 </style>
 </head>
-<body>
-
+<body data-theme="dark">
 <div class="demo-badge"><span class="dot"></span>演示 DEMO · 预置脚本</div>
 <a class="top-link" href="https://nieshuaiX.github.io/memory-light-box/">← 回到项目页</a>
-
-<div class="stage">
-  <div id="view"></div>
-</div>
-
+<div class="stage"><div id="view"></div></div>
 <div class="toast" id="toast"></div>
-
 <script>
-/* ============================================================
- * 忆光匣 在线演示（Demo）
- * 仅演示产品形态与交互流程，回复均为预置脚本，非真实 AI。
- * ============================================================ */
-
-var S = {
-  user: "我",
-  ta: "TA",
-  step: 0,          // 回忆录进度
-  chatStep: 0,
-  inFork: false,
-  userLines: []     // 用户在对话里的输入（用于脚本回应）
-};
-
-/* ---------- 路由 ---------- */
-var routes = ["start", "import", "building", "profile", "chat", "fate", "reverse", "memoir", "monologue", "mono-done", "memoir-done"];
-function view(){
-  var h = location.hash.replace("#/", "") || "start";
-  return routes.indexOf(h) >= 0 ? h : "start";
-}
-function go(h){ location.hash = "#/" + h; }
-window.addEventListener("hashchange", render);
-function render(){
-  var v = view();
-  var el = document.getElementById("view");
-  el.innerHTML = "";
-  var fn = {start:rStart, import:rImport, building:rBuilding, profile:rProfile, chat:rChat,
-            fate:rFate, reverse:rReverse, memoir:rMemoir, monologue:rMonologue,
-            "mono-done":rMonoDone, "memoir-done":rMemoirDone}[v] || rStart;
-  fn(el);
-  window.scrollTo(0,0);
-}
-function toast(t){
-  var el = document.getElementById("toast");
-  el.textContent = t;
-  el.classList.add("show");
-  setTimeout(function(){ el.classList.remove("show"); }, 2200);
-}
-
-/* ---------- 开始页 ---------- */
-function rStart(el){
-  el.innerHTML = `
-    <div class="card" style="text-align:center;padding-top:34px;">
-      <p class="kicker">MEMORY LIGHT BOX</p>
-      <h1 class="serif" style="font-size:38px;margin-bottom:6px;">忆光匣</h1>
-      <p style="color:var(--gold);font-size:15px;letter-spacing:2px;margin-bottom:22px;">与记忆中的人，重新说说话</p>
-      <div class="notice" style="text-align:left;">
-        <b>这是产品形态演示</b>：界面与流程为真实设计，对话回复为预置脚本，
-        不代表忆光匣最终能力。完整版接入大模型后，才能理解你的真实记忆与表达。
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="field">
-        <label>你的名字</label>
-        <input id="in-user" placeholder="例如：小渊" maxlength="10">
-      </div>
-      <div class="field">
-        <label>TA 的称呼</label>
-        <input id="in-ta" placeholder="例如：外婆" maxlength="10">
-      </div>
-      <p class="small" style="margin-bottom:14px;">留空则使用「我 / TA」。名字仅用于本页演示，数据不出浏览器。</p>
-      <div class="mode-list">
-        <button class="mode-item reco" onclick="pickImport()">
-          <span class="icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
-          </span>
-          <span class="txt"><h3>导入构建 <span class="reco-tag">推荐演示</span></h3><p>上传素材，构建 TA 的画像，进入回忆对话</p></span>
-        </button>
-        <button class="mode-item" onclick="pickMemoir()">
-          <span class="icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-          </span>
-          <span class="txt"><h3>书写回忆录</h3><p>引导式书写 + 温柔追问，把记忆一点点想回来</p></span>
-        </button>
-        <button class="mode-item" onclick="pickMono()">
-          <span class="icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><circle cx="12" cy="7" r="4"/><path d="M4 21c1.2-4 4.6-6 8-6s6.8 2 8 6"/></svg>
-          </span>
-          <span class="txt"><h3>独白模式</h3><p>和某个时期的自己，重新说说话</p></span>
-        </button>
-      </div>
-    </div>
-    <p class="small" style="text-align:center;">演示脚本 · 数据仅存于浏览器 · 刷新即重置</p>`;
-}
-function pickImport(){
-  readNames();
-  go("import");
-}
-function pickMemoir(){
-  readNames();
-  S.step = 0;
-  go("memoir");
-}
-function pickMono(){
-  readNames();
-  go("monologue");
-}
-function readNames(){
-  var u = document.getElementById("in-user");
-  var t = document.getElementById("in-ta");
-  if(u && u.value.trim()) S.user = u.value.trim();
-  if(t && t.value.trim()) S.ta = t.value.trim();
-}
-
-/* ---------- 导入页 ---------- */
-function rImport(el){
-  el.innerHTML = `
-    <div class="card">
-      <div class="chat-head" style="border:none;padding:0;margin-bottom:16px;">
-        <div class="mini-av">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><path d="M4 4h16v12H8l-4 4V4z"/></svg>
-        </div>
-        <div><div class="nm">导入素材</div><div class="st">构建 ${S.ta} 的画像</div></div>
-      </div>
-      <p class="small" style="margin-bottom:12px;">示意界面：完整版支持导入微信聊天记录 / 纯文本 / 语音 / 照片等素材。</p>
-      <div class="file-item">
-        <span class="fi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-6-6z"/><path d="M14 3v6h6"/></svg></span>
-        <span class="fn">与${S.ta}的聊天记录.txt</span><span class="fs">2.4 MB</span>
-      </div>
-      <div class="file-item">
-        <span class="fi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></span>
-        <span class="fn">2016 年夏天的照片</span><span class="fs">12 张</span>
-      </div>
-      <div class="file-item">
-        <span class="fi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 3-6 3V9z"/></svg></span>
-        <span class="fn">语音 · 你走的那天</span><span class="fs">0:38</span>
-      </div>
-      <div class="divider"></div>
-      <button class="btn btn-solid" onclick="go('building')">开始构建画像</button>
-      <p class="replay-tip">演示中 · 点击后播放构建动画</p>
-    </div>`;
-}
-
-/* ---------- 构建动画页 ---------- */
-function rBuilding(el){
-  el.innerHTML = `
-    <div class="card" style="text-align:center;padding:40px 22px;">
-      <div class="avatar" style="width:72px;height:72px;">
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></svg>
-      </div>
-      <h2 style="margin:12px 0 6px;">正在构建 ${S.ta} 的画像</h2>
-      <div class="build-bar"><i id="bar"></i></div>
-      <div class="build-tip" id="tip"></div>
-      <p class="small" style="margin-top:18px;">演示动画 · 完整版将真实解析素材</p>
-    </div>`;
-  var steps = ["解析聊天记录…", "提取语气与口头禅…", "整理回忆片段…", "画像构建完成"];
-  var i = 0, bar = document.getElementById("bar"), tip = document.getElementById("tip");
-  function tick(){
-    if(i < steps.length){
-      tip.textContent = steps[i];
-      bar.style.width = ((i + 1) / steps.length * 100) + "%";
-      i++;
-      setTimeout(tick, 750);
-    } else {
-      setTimeout(function(){ go("profile"); }, 500);
-    }
-  }
-  tick();
-}
-
-/* ---------- 画像页 ---------- */
-function rProfile(el){
-  el.innerHTML = `
-    <div class="card profile-card">
-      <div class="avatar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.4">
-          <circle cx="12" cy="8" r="3.4"/>
-          <path d="M5 20c1.3-4.2 4.2-6.3 7-6.3s5.7 2.1 7 6.3"/>
-        </svg>
-      </div>
-      <h2 class="serif">${S.ta}</h2>
-      <div class="who">基于你的素材构建 · 演示画像</div>
-      <div class="tags">
-        <span class="tag">说话总带着笑</span>
-        <span class="tag">记得你小时候</span>
-        <span class="tag">总担心你熬夜</span>
-      </div>
-      <p class="profile-note">画像标签由 AI 从素材中提取，<b>不编造、只留存</b>。<br>（演示标签为示例，不代表真实分析）</p>
-      <div class="divider"></div>
-      <button class="btn btn-solid" onclick="go('chat')">进入回忆</button>
-      <p class="replay-tip">下一步：宿命 / 逆转模式演示</p>
-    </div>`;
-}
-
-/* ---------- 对话页 ---------- */
-var CHAT_SCRIPT = [
-  {who:"ta",  txt:"{ta}：{user}，你来啦。"},
-  {who:"ta",  txt:"{ta}：今天外面是不是又下雨了？你小时候啊，最爱踩着水坑跑。"},
-  {who:"me",  txt:"嗯…下了一点。我走的是以前放学那条路。"},
-  {who:"ta",  txt:"{ta}：那条路啊。转角那家店还开着吗？你总缠着我给你买糖。"},
-  {who:"me",  txt:"还开着。老板都认得我。"},
-  {who:"ta",  txt:"{ta}：那就好，那就好……{user}，我有一句话，一直没来得及跟你说。"},
-  {who:"me",  txt:"你说，我听着。"},
-  {who:"ta",  txt:"{ta}：那一年你出门之前，我其实站在窗边看了你好久。想喊你回来吃顿饭，又怕耽误你。", fork:"yes"}
-];
-
-function rChat(el){
-  S.chatStep = 0;
-  S.inFork = false;
-  el.innerHTML = `
-    <div class="card">
-      <div class="chat-head">
-        <div class="mini-av">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.4"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1.3-4.2 4.2-6.3 7-6.3s5.7 2.1 7 6.3"/></svg>
-        </div>
-        <div><div class="nm">${S.ta}</div><div class="st live">● 回忆中</div></div>
-        <a class="back" href="#/start">退出</a>
-      </div>
-      <div class="msgs" id="msgs"></div>
-      <div id="forkBox"></div>
-      <div class="chat-input">
-        <input id="chatIn" placeholder="说点什么…（演示）" maxlength="50">
-        <button class="send" id="sendBtn" onclick="onSend()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-        </button>
-      </div>
-      <p class="chat-hint">演示脚本 · 真实对话需接入大模型（完整版）</p>
-    </div>`;
-  var inp = document.getElementById("chatIn");
-  inp.addEventListener("keydown", function(e){
-    if(e.key === "Enter" && !S.inFork) onSend();
-  });
-  pushScript();
-}
-function addMsg(who, text){
-  var box = document.getElementById("msgs");
-  if(!box) return;
-  var d = document.createElement("div");
-  d.className = "msg " + who + " hidden";
-  d.innerHTML = text.replace(/\n/g,"<br>") + '<span class="cursor"></span>';
-  box.appendChild(d);
-  return d;
-}
-function pushScript(){
-  var s = CHAT_SCRIPT[S.chatStep];
-  if(!s) return;
-  var txt = s.txt
-    .replace(/\{ta\}/g, S.ta)
-    .replace(/\{user\}/g, S.user);
-  if(s.who === "me"){
-    var m = addMsg("me", txt.replace(S.user + "：", ""));
-    showTyped(m, function(){
-      S.chatStep++;
-      setTimeout(pushScript, 500);
-    });
-  } else if(s.fork === "yes"){
-    var m = addMsg("ta", txt.replace(S.ta + "：", ""));
-    showTyped(m, function(){
-      S.chatStep++;
-      setTimeout(showFork, 600);
-    });
-  } else {
-    var m = addMsg("ta", txt.replace(S.ta + "：", ""));
-    showTyped(m, function(){
-      S.chatStep++;
-      setTimeout(pushScript, 600);
-    });
-  }
-}
-function showTyped(el, done){
-  if(!el) return;
-  el.classList.remove("hidden");
-  var box = document.getElementById("msgs");
-  box.scrollTop = box.scrollHeight;
-  var text = el.childNodes[0] ? el.childNodes[0].textContent : "";
-  var cur = el.querySelector(".cursor");
-  if(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches){
-    setTimeout(done, 350);
-    return;
-  }
-  el.childNodes[0].nodeValue = "";
-  var i = 0;
-  var iv = setInterval(function(){
-    i += 2;
-    el.childNodes[0].nodeValue = text.slice(0, i);
-    box.scrollTop = box.scrollHeight;
-    if(i >= text.length){
-      clearInterval(iv);
-      if(cur) cur.remove();
-      setTimeout(done, 250);
-    }
-  }, 36);
-}
-function onSend(){
-  if(S.inFork) return;
-  var inp = document.getElementById("chatIn");
-  var v = inp.value.trim();
-  if(!v){ toast("演示中 · 请输入内容"); return; }
-  inp.value = "";
-  S.userLines.push(v);
-  var m = addMsg("me", v);
-  showTyped(m, function(){
-    setTimeout(function(){
-      var replies = [
-        "{ta}：嗯，我听着呢。你说话的样子，还是和小时候一样。",
-        "{ta}：这事我记得。你总以为我不记得。",
-        "{ta}：后来呢？后来怎么样了？（演示脚本回应）"
-      ];
-      var r = addMsg("ta", replies[S.userLines.length % 3].replace(/\{ta\}/g, S.ta));
-      showTyped(r, function(){});
-    }, 500);
-  });
-}
-function showFork(){
-  S.inFork = true;
-  var box = document.getElementById("forkBox");
-  if(!box) return;
-  box.innerHTML = `
-    <div class="fork">
-      <div class="fk-t">关键节点 · 你做了一个决定</div>
-      <div class="fk-d">那天你原本答应要早点回家。现在，你回到了这个节点——</div>
-      <div class="fk-btns">
-        <button class="btn btn-ghost" onclick="choose('fate')">
-          宿命 · 按原样继续<span class="arrow">→</span>
-        </button>
-        <button class="btn btn-solid" onclick="choose('reverse')">
-          逆转 · 这次早点回去<span class="arrow">→</span>
-        </button>
-      </div>
-    </div>`;
-  box.scrollIntoView({behavior:"smooth", block:"center"});
-}
-function choose(mode){
-  S.inFork = false;
-  go(mode);
-}
-
-/* ---------- 结局页 ---------- */
-function rFate(el){
-  ending(el, "fate");
-}
-function rReverse(el){
-  ending(el, "reverse");
-}
-function ending(el, mode){
-  var isRev = mode === "reverse";
-  el.innerHTML = `
-    <div class="card ending">
-      <p class="ey">${isRev ? "逆转模式 · REVERSE" : "宿命模式 · FATE"}</p>
-      <h2 class="serif">${isRev
-        ? "你推开门。<br>这一次，来得及。"
-        : "有些事，就是会那样发生。"}</h2>
-      <p>${isRev
-        ? "「回来啦？饭还热着，快坐下。」窗外的雨停了。这一次，你没有错过那顿饭。"
-        : "「别哭啊，{user}。我一直都在。有些话说不出口，也不一定要说。」你重新经历了那一晚，也终于接受了它。"}
-      </p>
-      <div class="mode-line ${isRev ? "rev" : "fate"}">
-        ${isRev
-          ? "逆转模式：在记忆涉及的范围内做出不同选择，看看「如果当时」会怎样。它有边界——这终究是回忆，不是平行宇宙。"
-          : "宿命模式：你可以回去，可以重新走一遍，但改变不了什么——让你重新经历，也让你接受过去。"}
-      </div>
-      <button class="btn btn-solid" onclick="go('start')">重新体验</button>
-      <button class="btn btn-ghost" style="margin-top:8px;" onclick="location.href='https://nieshuaiX.github.io/memory-light-box/'">回到项目页</button>
-    </div>`;
-  var p = el.querySelector("p");
-  if(p && p.textContent.indexOf("{user}") >= 0){
-    p.innerHTML = p.innerHTML.replace(/\{user\}/g, S.user);
-  }
-}
-
-/* ---------- 回忆录 ---------- */
-var MEMOIR_STEPS = [
-  {q:"那天，是什么天气？你站在哪里？", hint:"越具体越好，比如「秋天，外婆家院子里，桂花开了」"},
-  {q:"TA 当时在做什么？脸上是什么表情？", hint:"试着想起细节：围裙、手势、眼角的笑"},
-  {q:"如果还能再问 TA 一句话，你想问什么？", hint:"这句话会被记进回忆录"}
-];
-function rMemoir(el){
-  var s = MEMOIR_STEPS[S.step];
-  el.innerHTML = `
-    <div class="card">
-      <div class="chat-head" style="border:none;padding:0;margin-bottom:18px;">
-        <div class="mini-av"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-        <div><div class="nm">书写回忆录</div><div class="st">${S.step + 1} / 3</div></div>
-      </div>
-      <div class="q-box"><div class="qq">温柔的追问</div>${s.q}</div>
-      <div class="textarealine">
-        <textarea id="memoIn" placeholder="${s.hint}"></textarea>
-      </div>
-      <div class="saved-line" id="saved"><span class="dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#8FBF8F;margin-right:6px;"></span>已收录进回忆录（本页仅演示）</div>
-      <div class="divider"></div>
-      <button class="btn btn-solid" id="memoNext" onclick="memoNext()">${S.step >= 2 ? "完成回忆录" : "下一条记忆"}</button>
-      <p class="replay-tip">演示脚本 · 完整版支持 AI 追问、导出 txt / PDF / HTML</p>
-    </div>`;
-  var ta = document.getElementById("memoIn");
-  var saved = document.getElementById("saved");
-  var btn = document.getElementById("memoNext");
-  ta.addEventListener("input", function(){
-    if(ta.value.trim()){
-      saved.classList.add("show");
-    } else {
-      saved.classList.remove("show");
-    }
-  });
-}
-function memoNext(){
-  var ta = document.getElementById("memoIn");
-  if(!ta || !ta.value.trim()){
-    toast("写点什么吧，哪怕一句也好");
-    return;
-  }
-  S.step++;
-  if(S.step >= MEMOIR_STEPS.length){
-    go("memoir-done");
-  } else {
-    go("memoir");
-  }
-}
-function rMemoirDone(el){
-  el.innerHTML = `
-    <div class="card" style="text-align:center;padding:34px 22px;">
-      <p class="kicker">回忆录 · 完成</p>
-      <h2 class="serif" style="margin-bottom:14px;">你的回忆，被留住了</h2>
-      <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;">
-        三条片段已整理成一页回忆录（演示）。<br>
-        完整版中，AI 会继续温柔追问，帮你想起更多细节，<br>
-        并支持导出 <b style="color:var(--warm);">txt / PDF / HTML</b>。
-      </p>
-      <div class="notice" style="text-align:left;">
-        <b>不编造，只留存</b>：回忆录只收录你写下的内容，AI 不会替你编造记忆。
-      </div>
-      <div class="divider"></div>
-      <button class="btn btn-solid" onclick="go('start')">重新体验</button>
-      <button class="btn btn-ghost" style="margin-top:8px;" onclick="location.href='https://nieshuaiX.github.io/memory-light-box/'">回到项目页</button>
-    </div>`;
-}
-
-/* ---------- 独白模式 ---------- */
-function rMonologue(el){
-  el.innerHTML = `
-    <div class="card">
-      <div class="chat-head" style="border:none;padding:0;margin-bottom:18px;">
-        <div class="mini-av"><svg viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.4" width="18" height="18"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1.3-4.2 4.2-6.3 7-6.3s5.7 2.1 7 6.3"/></svg></div>
-        <div><div class="nm">独白模式 · 与过去的自己</div><div class="st">把日记 / 随笔归为「我」</div></div>
-      </div>
-      <div class="q-box">
-        <div class="qq">现在的你，想对过去的自己说</div>
-        写一句话给某个时期的自己——比如「别害怕，那件事会过去的」。
-      </div>
-      <div class="textarealine">
-        <textarea id="monoIn" placeholder="例如：高二那年的你，别熬到凌晨了，身体会垮的…" maxlength="120"></textarea>
-      </div>
-      <div class="divider"></div>
-      <button class="btn btn-solid" onclick="monoNext()">说给 TA 听</button>
-      <p class="replay-tip">演示脚本 · 完整版会构建「过去的我」的画像</p>
-    </div>`;
-}
-function monoNext(){
-  var ta = document.getElementById("monoIn");
-  if(!ta || !ta.value.trim()){
-    toast("说点什么吧");
-    return;
-  }
-  S.monoMsg = ta.value.trim();
-  go("mono-done");
-}
-function rMonoDone(el){
-  el.innerHTML = `
-    <div class="card" style="text-align:center;padding:34px 22px;">
-      <p class="kicker">独白模式 · 回应</p>
-      <h2 class="serif" style="margin-bottom:14px;">「过去的你」听到了</h2>
-      <div class="q-box" style="text-align:left;font-size:14px;color:var(--warm);">
-        <div class="qq">TA 这样回应（演示脚本）</div>
-        「我知道了。谢谢你，在那么多年以后还记得告诉我。我会好好照顾自己，你也要。」
-      </div>
-      <p style="font-size:13px;color:var(--muted);margin-top:14px;line-height:1.8;">
-        完整版中，AI 会基于你的日记、随笔和自述，<br>构建「过去的我」的画像，让这段对话真正属于你。
-      </p>
-      <div class="divider"></div>
-      <button class="btn btn-solid" onclick="go('start')">重新体验</button>
-      <button class="btn btn-ghost" style="margin-top:8px;" onclick="location.href='https://nieshuaiX.github.io/memory-light-box/'">回到项目页</button>
-    </div>`;
-}
-
-/* ---------- 启动 ---------- */
+/* 忆光匣 在线演示（Demo）首页按忆光匣真实 UI 结构照搬（信封火漆/五功能/我的匣子/双主题），其余页面为产品流程示意；对话回复均为预置脚本，非真实 AI。*/
+(function(){var saved="dark";try{saved=localStorage.getItem("mlb-theme")||"dark";}catch(e){}
+document.body.setAttribute("data-theme",saved==="light"?"light":"dark");document.documentElement.setAttribute("data-theme",saved==="light"?"light":"dark");})();
+function toggleTheme(){var cur=document.documentElement.getAttribute("data-theme")==="light"?"dark":"light";document.documentElement.setAttribute("data-theme",cur);document.body.setAttribute("data-theme",cur);try{localStorage.setItem("mlb-theme",cur);}catch(e){}var lbl=document.getElementById("themeLbl");if(lbl)lbl.textContent=cur==="light"?"深色":"浅色";}
+var S={user:"我",ta:"TA",step:0,chatStep:0,inFork:false,userLines:[]};
+var routes=["start","import","building","profile","chat","fate","reverse","memoir","monologue","mono-done","memoir-done"];
+function view(){var h=location.hash.replace("#/","")||"start";return routes.indexOf(h)>=0?h:"start";}
+function go(h){location.hash="#/"+h;}
+window.addEventListener("hashchange",render);
+function render(){var v=view();var el=document.getElementById("view");el.innerHTML="";var fn={start:rStart,import:rImport,building:rBuilding,profile:rProfile,chat:rChat,fate:rFate,reverse:rReverse,memoir:rMemoir,monologue:rMonologue,"mono-done":rMonoDone,"memoir-done":rMemoirDone}[v]||rStart;fn(el);window.scrollTo(0,0);if(v==="start")initSparks();}
+function toast(t){var el=document.getElementById("toast");el.textContent=t;el.classList.add("show");setTimeout(function(){el.classList.remove("show");},2200);}
+var SPARK_RUN=false;
+function initSparks(){if(SPARK_RUN)return;SPARK_RUN=true;var box=document.getElementById("envWrap");if(!box||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))return;var seed=[18,34,26,42,31,15,28,37,22,40];var spans=["38%,20%","62%,30%","24%,55%","78%,48%","46%,70%","58%,16%","30%,38%","70%,62%","14%,68%","86%,26%"];spans.forEach(function(pos,i){var s=document.createElement("span");s.className="env-spark";s.style.left=pos.split(",")[0];s.style.top=pos.split(",")[1];s.style.animationDelay=(seed[i%10]*0.13).toFixed(2)+"s";s.style.animationDuration=(3.6+(seed[i%10]%5)*0.35).toFixed(2)+"s";box.appendChild(s);});}
+function rStart(el){el.innerHTML=`
+<div class="home-top"><span class="home-brand"><b>忆光匣</b> · MEMORY LIGHT BOX</span><button class="theme-switch" onclick="toggleTheme()" aria-label="切换深浅主题"><svg class="sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg><svg class="moon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg><span id="themeLbl">${document.documentElement.getAttribute("data-theme")==="light"?"深色":"浅色"}</span></button></div>
+<div class="hero-envelope"><div class="env-wrap" id="envWrap"><div class="env-glow"></div><svg class="env-svg" viewBox="0 0 248 172" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="envPaper" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3E6CD"/><stop offset="1" stop-color="#E2CDA8"/></linearGradient><linearGradient id="envInk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8A6A3B"/><stop offset="1" stop-color="#A97B2F"/></linearGradient></defs><path d="M20 46 C70 8 178 8 228 46 L228 128 C228 144 216 156 200 156 L48 156 C32 156 20 144 20 128 Z" fill="url(#envPaper)" stroke="#C9AE82" stroke-width="2"/><path d="M20 46 L124 108 L228 46" fill="#F6EBD8" stroke="#C9AE82" stroke-width="2"/><path d="M20 128 L86 66 M228 128 L162 66" stroke="#C9AE82" stroke-width="2" opacity=".7"/><circle cx="124" cy="92" r="27" fill="url(#envInk)"/><circle cx="124" cy="92" r="20.5" fill="none" stroke="#F3E6CD" stroke-width="2.5" opacity=".85"/><circle cx="124" cy="92" r="14" fill="none" stroke="#F3E6CD" stroke-width="1.4" opacity=".7"/><path d="M118 84 L130 84 L130 92 L124 98 L118 92 Z" fill="#F3E6CD" opacity=".9"/><path d="M48 156 C84 132 164 132 200 156 L200 156 C168 176 80 176 48 156 Z" fill="#F6EBD8" stroke="#C9AE82" stroke-width="2"/><path d="M76 156 C102 140 146 140 172 156" stroke="#E0B36C" stroke-width="2.5" opacity=".7"/><path d="M96 156 C112 146 136 146 152 156" stroke="#E0B36C" stroke-width="1.8" opacity=".5"/></svg></div><h1 class="home-title serif">忆光匣</h1><p class="home-tagline serif">与记忆中的人，重新说说话</p><p class="home-sub">一台本地的回忆体验装置 · 不编造，只留存</p><button class="enter-btn" onclick="pickImport()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>进入回忆</button></div>
+<div class="func-bar"><button class="func-item" onclick="pickImport()"><span class="fi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.9"><path d="M12 5v14M5 12h14"/></svg></span><span class="ft">新建回忆</span></button><button class="func-item" onclick="pickMemoir()"><span class="fi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.9"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span><span class="ft">回忆录模式</span></button><button class="func-item" onclick="goToBoxes()"><span class="fi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.9"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></span><span class="ft">已有的回忆</span></button><button class="func-item" onclick="pickImport()"><span class="fi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.9"><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/><path d="M7 9l5-5 5 5M12 4v12"/></svg></span><span class="ft">导入备份</span></button><button class="func-item" onclick="toggleTheme()"><span class="fi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.9"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg></span><span class="ft">浅色</span></button></div>
+<div class="box-sec"><div class="box-head"><h3 class="serif">我的匣子</h3><span class="cnt">记忆全部留在本地</span></div><div class="box-grid"><button class="box-card" onclick="enterBox()"><div class="bc-glow"></div><div class="bc-name">外婆</div><div class="bc-meta">最近打开 · 宿命 / 逆转</div><span class="bc-badge">示例回忆</span></button><button class="box-card new" onclick="pickImport()"><span class="plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span><span>新建回忆</span></button></div></div>
+<div class="home-foot"><a href="https://nieshuaiX.github.io/memory-light-box/">关于项目</a><a href="#" onclick="showDemoTip(event)">演示说明</a><p class="small" style="margin-top:10px;">演示脚本 · 数据仅存于浏览器 · 刷新即重置</p></div>`;}
+function goToBoxes(){var boxes=document.querySelector(".box-sec");if(boxes){boxes.scrollIntoView({behavior:"smooth",block:"center"});}else{go("start");}}
+function enterBox(){readNames();go("chat");}
+function showDemoTip(e){e.preventDefault();toast("演示说明：界面为忆光匣设计还原，对话为预置脚本");}
+function pickImport(){readNames();go("import");}
+function pickMemoir(){readNames();S.step=0;go("memoir");}
+function pickMono(){readNames();go("monologue");}
+function readNames(){var u=document.getElementById("in-user");var t=document.getElementById("in-ta");if(u&&u.value.trim())S.user=u.value.trim();if(t&&t.value.trim())S.ta=t.value.trim();}
+function rImport(el){el.innerHTML=`
+<div class="card"><div class="chat-head" style="border:none;padding:0;margin-bottom:16px;"><div class="mini-av"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><path d="M4 4h16v12H8l-4 4V4z"/></svg></div><div><div class="nm">导入素材</div><div class="st">构建 ${S.ta} 的画像</div></div></div>
+<div class="field"><label>TA 的称呼</label><input id="in-ta" placeholder="例如：外婆" maxlength="10" value="${S.ta==="TA"?"":S.ta}"></div>
+<div class="field"><label>你的名字</label><input id="in-user" placeholder="例如：小渊" maxlength="10" value="${S.user==="我"?"":S.user}"></div>
+<p class="small" style="margin-bottom:12px;">示意界面：完整版支持导入微信聊天记录 / 纯文本 / 语音 / 照片等素材。</p>
+<div class="file-item"><span class="fi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-6-6z"/><path d="M14 3v6h6"/></svg></span><span class="fn">与${S.ta}的聊天记录.txt</span><span class="fs">2.4 MB</span></div>
+<div class="file-item"><span class="fi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></span><span class="fn">2016 年夏天的照片</span><span class="fs">12 张</span></div>
+<div class="file-item"><span class="fi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 3-6 3V9z"/></svg></span><span class="fn">语音 · 你走的那天</span><span class="fs">0:38</span></div>
+<div class="divider"></div><button class="btn btn-solid" onclick="doImport()">开始构建画像</button><p class="replay-tip">演示中 · 点击后播放构建动画</p></div>`;}
+function doImport(){readNames();go("building");}
+function rBuilding(el){el.innerHTML=`
+<div class="card" style="text-align:center;padding:40px 22px;"><div class="avatar" style="width:72px;height:72px;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></svg></div><h2 style="margin:12px 0 6px;">正在构建 ${S.ta} 的画像</h2><div class="build-bar"><i id="bar"></i></div><div class="build-tip" id="tip"></div><p class="small" style="margin-top:18px;">演示动画 · 完整版将真实解析素材</p></div>`;
+var steps=["解析聊天记录…","提取语气与口头禅…","整理回忆片段…","画像构建完成"];var i=0,bar=document.getElementById("bar"),tip=document.getElementById("tip");(function tick(){if(i<steps.length){tip.textContent=steps[i];bar.style.width=((i+1)/steps.length*100)+"%";i++;setTimeout(tick,750);}else{setTimeout(function(){go("profile");},500);}})();}
+function rProfile(el){el.innerHTML=`
+<div class="card profile-card"><div class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.4"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1.3-4.2 4.2-6.3 7-6.3s5.7 2.1 7 6.3"/></svg></div><h2 class="serif">${S.ta}</h2><div class="who">基于你的素材构建 · 演示画像</div><div class="tags"><span class="tag">说话总带着笑</span><span class="tag">记得你小时候</span><span class="tag">总担心你熬夜</span></div><p class="profile-note">画像标签由 AI 从素材中提取，<b>不编造、只留存</b>。<br>（演示标签为示例，不代表真实分析）</p><div class="divider"></div><button class="btn btn-solid" onclick="go('chat')">进入回忆</button><p class="replay-tip">下一步：宿命 / 逆转模式演示</p></div>`;}
+var CHAT_SCRIPT=[{who:"ta",txt:"{ta}：{user}，你来啦。"},{who:"ta",txt:"{ta}：今天外面是不是又下雨了？你小时候啊，最爱踩着水坑跑。"},{who:"me",txt:"嗯…下了一点。我走的是以前放学那条路。"},{who:"ta",txt:"{ta}：那条路啊。转角那家店还开着吗？你总缠着我给你买糖。"},{who:"me",txt:"还开着。老板都认得我。"},{who:"ta",txt:"{ta}：那就好，那就好……{user}，我有一句话，一直没来得及跟你说。"},{who:"me",txt:"你说，我听着。"},{who:"ta",txt:"{ta}：那一年你出门之前，我其实站在窗边看了你好久。想喊你回来吃顿饭，又怕耽误你。",fork:"yes"}];
+function rChat(el){S.chatStep=0;S.inFork=false;el.innerHTML=`
+<div class="card"><div class="chat-head"><div class="mini-av"><svg viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.4"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1.3-4.2 4.2-6.3 7-6.3s5.7 2.1 7 6.3"/></svg></div><div><div class="nm">${S.ta}</div><div class="st live">● 回忆中</div></div><a class="back" href="#/start">退出</a></div><div class="msgs" id="msgs"></div><div id="forkBox"></div><div class="chat-input"><input id="chatIn" placeholder="说点什么…（演示）" maxlength="50"><button class="send" id="sendBtn" onclick="onSend()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></button></div><p class="chat-hint">演示脚本 · 真实对话需接入大模型（完整版）</p></div>`;
+var inp=document.getElementById("chatIn");inp.addEventListener("keydown",function(e){if(e.key==="Enter"&&!S.inFork)onSend();});pushScript();}
+function addMsg(who,text){var box=document.getElementById("msgs");if(!box)return;var d=document.createElement("div");d.className="msg "+who+" hidden";d.innerHTML=text.replace(/\n/g,"<br>")+'<span class="cursor"></span>';box.appendChild(d);return d;}
+function pushScript(){var s=CHAT_SCRIPT[S.chatStep];if(!s)return;var txt=s.txt.replace(/\{ta\}/g,S.ta).replace(/\{user\}/g,S.user);if(s.who==="me"){var m=addMsg("me",txt.replace(S.user+"：",""));showTyped(m,function(){S.chatStep++;setTimeout(pushScript,500);});}else if(s.fork==="yes"){var m=addMsg("ta",txt.replace(S.ta+"：",""));showTyped(m,function(){S.chatStep++;setTimeout(showFork,600);});}else{var m=addMsg("ta",txt.replace(S.ta+"：",""));showTyped(m,function(){S.chatStep++;setTimeout(pushScript,600);});}}
+function showTyped(el,done){el.classList.remove("hidden");var box=document.getElementById("msgs");box.scrollTop=box.scrollHeight;var text=el.childNodes[0]?el.childNodes[0].textContent:"";var cur=el.querySelector(".cursor");if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches){setTimeout(done,350);return;}el.childNodes[0].nodeValue="";var i=0;var iv=setInterval(function(){i+=2;el.childNodes[0].nodeValue=text.slice(0,i);box.scrollTop=box.scrollHeight;if(i>=text.length){clearInterval(iv);if(cur)cur.remove();setTimeout(done,250);}},36);}
+function onSend(){if(S.inFork)return;var inp=document.getElementById("chatIn");var v=inp.value.trim();if(!v){toast("演示中 · 请输入内容");return;}inp.value="";S.userLines.push(v);var m=addMsg("me",v);showTyped(m,function(){setTimeout(function(){var replies=["{ta}：嗯，我听着呢。你说话的样子，还是和小时候一样。","{ta}：这事我记得。你总以为我不记得。","{ta}：后来呢？后来怎么样了？（演示脚本回应）"];var r=addMsg("ta",replies[S.userLines.length%3].replace(/\{ta\}/g,S.ta));showTyped(r,function(){});},500);});}
+function showFork(){S.inFork=true;var box=document.getElementById("forkBox");if(!box)return;box.innerHTML=`<div class="fork"><div class="fk-t">关键节点 · 你做了一个决定</div><div class="fk-d">那天你原本答应要早点回家。现在，你回到了这个节点——</div><div class="fk-btns"><button class="btn btn-ghost" onclick="choose('fate')">宿命 · 按原样继续<span class="arrow">→</span></button><button class="btn btn-solid" onclick="choose('reverse')">逆转 · 这次早点回去<span class="arrow">→</span></button></div></div>`;box.scrollIntoView({behavior:"smooth",block:"center"});}
+function choose(mode){S.inFork=false;go(mode);}
+function rFate(el){ending(el,"fate");}
+function rReverse(el){ending(el,"reverse");}
+function ending(el,mode){var isRev=mode==="reverse";el.innerHTML=`<div class="card ending"><p class="ey">${isRev?"逆转模式 · REVERSE":"宿命模式 · FATE"}</p><h2 class="serif">${isRev?"你推开门。<br>这一次，来得及。":"有些事，就是会那样发生。"}</h2><p>${isRev?"「回来啦？饭还热着，快坐下。」窗外的雨停了。这一次，你没有错过那顿饭。":"「别哭啊，{user}。我一直都在。有些话说不出口，也不一定要说。」你重新经历了那一晚，也终于接受了它。"}</p><div class="mode-line ${isRev?"rev":"fate"}">${isRev?"逆转模式：在记忆涉及的范围内做出不同选择，看看「如果当时」会怎样。它有边界——这终究是回忆，不是平行宇宙。":"宿命模式：你可以回去，可以重新走一遍，但改变不了什么——让你重新经历，也让你接受过去。"}</div><button class="btn btn-solid" onclick="go('start')">重新体验</button><button class="btn btn-ghost" style="margin-top:8px;" onclick="location.href='https://nieshuaiX.github.io/memory-light-box/'">回到项目页</button></div>`;var p=el.querySelector("p");if(p&&p.textContent.indexOf("{user}")>=0){p.innerHTML=p.innerHTML.replace(/\{user\}/g,S.user);}}
+var MEMOIR_STEPS=[{q:"那天，是什么天气？你站在哪里？",hint:"越具体越好，比如「秋天，外婆家院子里，桂花开了」"},{q:"TA 当时在做什么？脸上是什么表情？",hint:"试着想起细节：围裙、手势、眼角的笑"},{q:"如果还能再问 TA 一句话，你想问什么？",hint:"这句话会被记进回忆录"}];
+function rMemoir(el){var s=MEMOIR_STEPS[S.step];el.innerHTML=`<div class="card"><div class="chat-head" style="border:none;padding:0;margin-bottom:18px;"><div class="mini-av"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><div><div class="nm">书写回忆录</div><div class="st">${S.step+1} / 3</div></div></div><div class="q-box"><div class="qq">温柔的追问</div>${s.q}</div><div class="textarealine"><textarea id="memoIn" placeholder="${s.hint}"></textarea></div><div class="saved-line" id="saved"><span class="dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#8FBF8F;margin-right:6px;"></span>已收录进回忆录（本页仅演示）</div><div class="divider"></div><button class="btn btn-solid" id="memoNext" onclick="memoNext()">${S.step>=2?"完成回忆录":"下一条记忆"}</button><p class="replay-tip">演示脚本 · 完整版支持 AI 追问、导出 txt / PDF / HTML</p></div>`;var ta=document.getElementById("memoIn");var saved=document.getElementById("saved");ta.addEventListener("input",function(){if(ta.value.trim()){saved.classList.add("show");}else{saved.classList.remove("show");}});}
+function memoNext(){var ta=document.getElementById("memoIn");if(!ta||!ta.value.trim()){toast("写点什么吧，哪怕一句也好");return;}S.step++;if(S.step>=MEMOIR_STEPS.length){go("memoir-done");}else{go("memoir");}}
+function rMemoirDone(el){el.innerHTML=`<div class="card" style="text-align:center;padding:34px 22px;"><p class="kicker">回忆录 · 完成</p><h2 class="serif" style="margin-bottom:14px;">你的回忆，被留住了</h2><p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;">三条片段已整理成一页回忆录（演示）。<br>完整版中，AI 会继续温柔追问，帮你想起更多细节，<br>并支持导出 <b style="color:var(--gold);">txt / PDF / HTML</b>。</p><div class="notice" style="text-align:left;"><b>不编造，只留存</b>：回忆录只收录你写下的内容，AI 不会替你编造记忆。</div><div class="divider"></div><button class="btn btn-solid" onclick="go('start')">重新体验</button><button class="btn btn-ghost" style="margin-top:8px;" onclick="location.href='https://nieshuaiX.github.io/memory-light-box/'">回到项目页</button></div>`;}
+function rMonologue(el){el.innerHTML=`<div class="card"><div class="chat-head" style="border:none;padding:0;margin-bottom:18px;"><div class="mini-av"><svg viewBox="0 0 24 24" fill="none" stroke="#E0B36C" stroke-width="1.4" width="18" height="18"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1.3-4.2 4.2-6.3 7-6.3s5.7 2.1 7 6.3"/></svg></div><div><div class="nm">独白模式 · 与过去的自己</div><div class="st">把日记 / 随笔归为「我」</div></div></div><div class="q-box"><div class="qq">现在的你，想对过去的自己说</div>写一句话给某个时期的自己——比如「别害怕，那件事会过去的」。</div><div class="textarealine"><textarea id="monoIn" placeholder="例如：高二那年的你，别熬到凌晨了，身体会垮的…" maxlength="120"></textarea></div><div class="divider"></div><button class="btn btn-solid" onclick="monoNext()">说给 TA 听</button><p class="replay-tip">演示脚本 · 完整版会构建「过去的我」的画像</p></div>`;}
+function monoNext(){var ta=document.getElementById("monoIn");if(!ta||!ta.value.trim()){toast("说点什么吧");return;}S.monoMsg=ta.value.trim();go("mono-done");}
+function rMonoDone(el){el.innerHTML=`<div class="card" style="text-align:center;padding:34px 22px;"><p class="kicker">独白模式 · 回应</p><h2 class="serif" style="margin-bottom:14px;">「过去的你」听到了</h2><div class="q-box" style="text-align:left;font-size:14px;color:var(--text2);"><div class="qq">TA 这样回应（演示脚本）</div>「我知道了。谢谢你，在那么多年以后还记得告诉我。我会好好照顾自己，你也要。」</div><p style="font-size:13px;color:var(--muted);margin-top:14px;line-height:1.8;">完整版中，AI 会基于你的日记、随笔和自述，<br>构建「过去的我」的画像，让这段对话真正属于你。</p><div class="divider"></div><button class="btn btn-solid" onclick="go('start')">重新体验</button><button class="btn btn-ghost" style="margin-top:8px;" onclick="location.href='https://nieshuaiX.github.io/memory-light-box/'">回到项目页</button></div>`;}
 render();
 </script>
 </body>
