@@ -36,20 +36,53 @@
     flex-direction:column;
     justify-content:center;
     position:relative;
+    overflow:hidden;
+    isolation:isolate;
     padding:96px 0 72px;
   }
+  /* 插画作为整层背景，向左羽化融入暗底，不再有贴图边界 */
   .hero-art{
-    position:absolute;right:0;top:50%;
-    transform:translateY(-50%);
-    width:min(520px,58vw);height:auto;
-    aspect-ratio:1/1;
+    position:absolute;inset:0;
+    width:100%;height:100%;
     object-fit:cover;
-    border-radius:12px;
+    object-position:78% 50%;
+    z-index:0;
+    opacity:.9;
+    -webkit-mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.25) 28%, #000 52%, #000 100%);
+            mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.25) 28%, #000 52%, #000 100%);
     pointer-events:none;
-    opacity:.92;
-    box-shadow:0 0 80px rgba(224,179,108,.18);
+    transform:scale(1.04);
   }
-  @media(max-width:900px){ .hero-art{width:min(360px,52vw);opacity:.35;} }
+  /* 左侧文字区的渐隐遮罩：文字清晰、向右自然过渡进画面 */
+  .hero::before{
+    content:"";
+    position:absolute;inset:0;z-index:1;
+    background:linear-gradient(to right, var(--ink) 0%, rgba(20,16,11,.93) 32%, rgba(20,16,11,.62) 55%, rgba(20,16,11,0) 78%);
+    pointer-events:none;
+  }
+  /* 底部渐暗，让 hero 与下一区块无缝衔接 */
+  .hero::after{
+    content:"";
+    position:absolute;left:0;right:0;bottom:0;height:190px;z-index:1;
+    background:linear-gradient(to top, var(--ink) 0%, rgba(20,16,11,.55) 42%, rgba(20,16,11,0) 100%);
+    pointer-events:none;
+  }
+  /* 右侧氛围光晕，与画面里的光点呼应 */
+  .hero .glow{
+    position:absolute;right:-12%;top:46%;z-index:0;
+    width:64vw;height:64vw;
+    background:radial-gradient(circle, rgba(224,179,108,.16) 0%, rgba(224,179,108,0) 62%);
+    pointer-events:none;
+  }
+  .hero .wrap{position:relative;z-index:2;}
+  .hero .scroll-hint{position:absolute;z-index:2;bottom:28px;left:28px;}
+  @media(max-width:900px){
+    .hero-art{object-position:62% 50%;opacity:.5;transform:scale(1.08);}
+    .hero::before{
+      background:linear-gradient(to right, rgba(20,16,11,.97) 0%, rgba(20,16,11,.9) 38%, rgba(20,16,11,.6) 70%, rgba(20,16,11,.35) 100%);
+    }
+    .hero .glow{width:110vw;height:110vw;right:-30%;}
+  }
   .kicker{
     font-size:13px;letter-spacing:4px;
     color:var(--gold);
@@ -254,6 +287,7 @@
 <!-- ===== Hero ===== -->
 <header class="hero">
   <img class="hero-art" src="assets/hero.jpg" alt="暖光从记忆的信封中涌出，一个人静静望向光" aria-hidden="true">
+  <div class="glow" aria-hidden="true"></div>
   <div class="wrap">
     <p class="kicker">MEMORY LIGHT BOX</p>
     <h1 class="serif">忆光匣</h1>
