@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>忆光匣 Memory Light Box · 与记忆中的人，重新说说话</title>
 <meta name="description" content="忆光匣是一台本地的回忆体验装置。用你自己的素材重建人物画像，与记忆中的人重新对话。数据全本地，不编造只留存。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2314100B'/%3E%3Ccircle cx='32' cy='26' r='16' fill='%23E0B36C' opacity='0.9'/%3E%3Cellipse cx='32' cy='42' rx='12' ry='16' fill='%2314100B'/%3E%3C/svg%3E">
 <style>
   :root{
     --ink:#14100B;
@@ -38,13 +39,15 @@
     padding:96px 0 72px;
   }
   .hero-art{
-    position:absolute;right:-40px;top:50%;
+    position:absolute;right:0;top:50%;
     transform:translateY(-50%);
-    width:520px;height:520px;
+    width:min(520px,60vw);height:auto;
+    aspect-ratio:1/1;
+    max-width:60vw;
     pointer-events:none;
     opacity:.85;
   }
-  @media(max-width:900px){ .hero-art{right:-180px;opacity:.4;} }
+  @media(max-width:900px){ .hero-art{display:none;} }
   .kicker{
     font-size:13px;letter-spacing:4px;
     color:var(--gold);
@@ -269,6 +272,7 @@
   </svg>
   <div class="wrap">
     <p class="kicker">MEMORY LIGHT BOX</p>
+    <h1 class="serif">忆光匣</h1>
     <p class="tagline serif">与记忆中的人，重新说说话</p>
     <p class="lede">一台本地的回忆体验装置。用你自己的素材重建 TA 的画像，回到那段时光里，把没说完的话说完。所有数据只留在你的电脑上。</p>
     <div class="cta-row">
