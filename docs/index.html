@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>忆光匣 Memory Light Box · 与记忆中的人，重新说说话</title>
+<meta name="description" content="忆光匣是一台本地的回忆体验装置。用你自己的素材重建人物画像，与记忆中的人重新对话。数据全本地，不编造只留存。">
+<style>
+  :root{
+    --ink:#14100B;
+    --cream:#F4EFE2;
+    --warm:#EDE7D8;
+    --gold:#E0B36C;
+    --sage:#3D4A40;
+    --muted:#B8A88F;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--warm);
+    font-family:"Source Han Sans SC","思源黑体","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.8;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:rgba(224,179,108,.35);}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+  .serif{font-family:"Source Han Serif SC","思源宋体","Songti SC",Georgia,serif;}
+
+  /* ===== Hero ===== */
+  .hero{
+    min-height:92vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    position:relative;
+    padding:96px 0 72px;
+  }
+  .hero-art{
+    position:absolute;right:-40px;top:50%;
+    transform:translateY(-50%);
+    width:520px;height:520px;
+    pointer-events:none;
+    opacity:.85;
+  }
+  @media(max-width:900px){ .hero-art{right:-180px;opacity:.4;} }
+  .kicker{
+    font-size:13px;letter-spacing:4px;
+    color:var(--gold);
+    margin-bottom:28px;
+  }
+  h1{
+    font-size:clamp(44px,7vw,84px);
+    color:var(--cream);
+    font-weight:600;
+    letter-spacing:6px;
+    line-height:1.15;
+    margin-bottom:20px;
+  }
+  .tagline{
+    font-size:clamp(20px,2.6vw,30px);
+    color:var(--gold);
+    letter-spacing:2px;
+    margin-bottom:18px;
+  }
+  .lede{
+    max-width:520px;
+    font-size:16px;
+    color:var(--muted);
+    margin-bottom:44px;
+  }
+  .cta-row{display:flex;gap:16px;flex-wrap:wrap;}
+  .btn{
+    display:inline-block;
+    padding:14px 34px;
+    border-radius:999px;
+    text-decoration:none;
+    font-size:15px;
+    letter-spacing:1px;
+    transition:all .25s ease;
+  }
+  .btn-solid{
+    background:var(--gold);
+    color:var(--ink);
+    font-weight:600;
+  }
+  .btn-solid:hover{background:var(--cream);transform:translateY(-2px);}
+  .btn-ghost{
+    border:1px solid rgba(224,179,108,.5);
+    color:var(--warm);
+  }
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+  .scroll-hint{
+    position:absolute;bottom:28px;left:28px;
+    font-size:12px;color:var(--muted);letter-spacing:2px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{padding:104px 0;}
+  .sec-head{margin-bottom:64px;}
+  .sec-no{
+    font-size:13px;letter-spacing:4px;color:var(--sage);
+    margin-bottom:14px;
+  }
+  .sec-title{
+    font-size:clamp(28px,4vw,44px);
+    color:var(--cream);
+    font-weight:600;
+    letter-spacing:2px;
+    line-height:1.3;
+  }
+  .sec-sub{
+    max-width:560px;
+    color:var(--muted);
+    font-size:15px;
+    margin-top:18px;
+  }
+
+  /* ===== 理念 ===== */
+  .why-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:72px;
+    align-items:start;
+  }
+  @media(max-width:800px){.why-grid{grid-template-columns:1fr;gap:48px;}}
+  .why-col h3{
+    font-size:20px;color:var(--gold);letter-spacing:2px;
+    margin-bottom:24px;font-weight:600;
+  }
+  .why-col ul{list-style:none;}
+  .why-col li{
+    position:relative;
+    padding-left:22px;
+    margin-bottom:18px;
+    font-size:15px;
+    color:var(--warm);
+  }
+  .why-col li::before{
+    content:"";
+    position:absolute;left:0;top:13px;
+    width:8px;height:8px;border-radius:50%;
+    background:var(--gold);opacity:.7;
+  }
+  .why-col.muted li{color:var(--muted);}
+  .divider-v{width:1px;background:rgba(224,179,108,.25);}
+  @media(min-width:801px){.divider-v{height:100%;}}
+
+  /* ===== 三种方式 ===== */
+  .ways-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;}
+  @media(max-width:800px){.ways-grid{grid-template-columns:1fr;}}
+  .way{
+    padding-top:28px;
+    border-top:1px solid rgba(224,179,108,.3);
+  }
+  .way .idx{
+    font-size:13px;color:var(--sage);letter-spacing:2px;
+    margin-bottom:18px;
+  }
+  .way h4{
+    font-size:20px;color:var(--cream);
+    margin-bottom:14px;font-weight:600;
+  }
+  .way p{font-size:14px;color:var(--muted);}
+
+  /* ===== 模式 ===== */
+  .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  @media(max-width:800px){.mode-grid{grid-template-columns:1fr;}}
+  .mode{
+    padding:40px 36px;
+    border:1px solid rgba(224,179,108,.22);
+    border-radius:4px;
+    background:rgba(224,179,108,.04);
+  }
+  .mode h4{font-size:22px;color:var(--gold);margin-bottom:16px;letter-spacing:2px;font-weight:600;}
+  .mode p{font-size:15px;color:var(--warm);margin-bottom:12px;}
+  .mode .note{font-size:13px;color:var(--muted);}
+
+  /* ===== 隐私 ===== */
+  .trust{
+    background:rgba(61,74,64,.18);
+    border-left:3px solid var(--sage);
+    padding:48px 44px;
+    border-radius:4px;
+  }
+  .trust h3{
+    font-size:22px;color:var(--cream);
+    margin-bottom:20px;font-weight:600;
+  }
+  .trust ul{list-style:none;}
+  .trust li{
+    padding-left:22px;position:relative;
+    margin-bottom:14px;font-size:15px;color:var(--warm);
+  }
+  .trust li::before{
+    content:"";
+    position:absolute;left:0;top:12px;
+    width:8px;height:8px;border-radius:50%;
+    background:var(--sage);
+  }
+
+  /* ===== 路线 ===== */
+  .road{display:flex;gap:0;align-items:stretch;}
+  @media(max-width:800px){.road{flex-direction:column;gap:36px;}}
+  .stop{flex:1;padding:0 28px;position:relative;}
+  .stop:not(:last-child)::after{
+    content:"";position:absolute;right:-1px;top:6px;
+    width:1px;height:calc(100% - 12px);
+    background:rgba(224,179,108,.2);
+  }
+  .stop .ver{font-size:15px;color:var(--gold);letter-spacing:2px;margin-bottom:10px;}
+  .stop h4{font-size:18px;color:var(--cream);margin-bottom:10px;font-weight:600;}
+  .stop p{font-size:13px;color:var(--muted);}
+  .stop .state{display:inline-block;margin-top:12px;font-size:12px;color:var(--sage);letter-spacing:1px;}
+
+  /* ===== 结尾 CTA ===== */
+  .closing{
+    text-align:center;
+    padding:140px 0;
+    border-top:1px solid rgba(224,179,108,.15);
+  }
+  .closing .big{
+    font-size:clamp(28px,4.5vw,46px);
+    color:var(--cream);
+    letter-spacing:3px;
+    margin-bottom:22px;
+    font-weight:600;
+  }
+  .closing p{color:var(--muted);margin-bottom:40px;font-size:15px;}
+  footer{
+    padding:36px 0 48px;
+    border-top:1px solid rgba(224,179,108,.1);
+    font-size:12px;color:var(--muted);
+    letter-spacing:1px;
+  }
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+  a.inline{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(224,179,108,.3);}
+  a.inline:hover{border-color:var(--gold);}
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <svg class="hero-art" viewBox="0 0 520 520" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <radialGradient id="glow" cx="50%" cy="46%" r="50%">
+        <stop offset="0%" stop-color="#F4EFE2" stop-opacity="0.9"/>
+        <stop offset="35%" stop-color="#E0B36C" stop-opacity="0.45"/>
+        <stop offset="100%" stop-color="#E0B36C" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <circle cx="260" cy="240" r="200" fill="url(#glow)"/>
+    <ellipse cx="260" cy="330" rx="95" ry="130" fill="#14100B"/>
+    <ellipse cx="260" cy="330" rx="95" ry="130" fill="none" stroke="#3D4A40" stroke-width="1.2" stroke-dasharray="3 6"/>
+    <circle cx="260" cy="210" r="6" fill="#F4EFE2"/>
+    <circle cx="150" cy="150" r="2.5" fill="#E0B36C"/>
+    <circle cx="380" cy="130" r="2" fill="#E0B36C"/>
+    <circle cx="120" cy="330" r="2" fill="#E0B36C"/>
+    <circle cx="400" cy="360" r="3" fill="#E0B36C"/>
+    <circle cx="210" cy="100" r="1.8" fill="#F4EFE2"/>
+    <circle cx="340" cy="250" r="1.5" fill="#F4EFE2"/>
+  </svg>
+  <div class="wrap">
+    <p class="kicker">MEMORY LIGHT BOX</p>
+    <p class="tagline serif">与记忆中的人，重新说说话</p>
+    <p class="lede">一台本地的回忆体验装置。用你自己的素材重建 TA 的画像，回到那段时光里，把没说完的话说完。所有数据只留在你的电脑上。</p>
+    <div class="cta-row">
+      <a class="btn btn-solid" href="#use">了解怎么用</a>
+      <a class="btn btn-ghost" href="#trust">隐私承诺</a>
+    </div>
+  </div>
+  <p class="scroll-hint">SCROLL</p>
+</header>
+
+<!-- ===== 理念 ===== -->
+<section id="why">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-no">01 · WHY</p>
+      <h2 class="sec-title serif">给心里那个「如果当时…」一个出口</h2>
+      <p class="sec-sub">小时候的某个下午、某段没说出口的话、某个转身就再也没见的人——我们知道回不去，但就是忍不住想。</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-col muted">
+        <h3>那些说不出口的</h3>
+        <ul>
+          <li>重要的人离开了，话却永远没说完</li>
+          <li>照片和聊天记录躺在硬盘里，再没打开过</li>
+          <li>「想回去看看」的念头，找不到出口</li>
+          <li>通用的聊天机器人，没有「那个人」的模样</li>
+        </ul>
+      </div>
+      <div class="why-col">
+        <h3>忆光匣的回答</h3>
+        <ul>
+          <li>用你自己的素材，重建 TA 的画像</li>
+          <li>与「记忆中的那个人」沉浸式对话</li>
+          <li>不编造、只留存——尊重记忆的边界</li>
+          <li>所有数据留在本地，只属于你</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 三种方式 ===== -->
+<section id="use">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-no">02 · HOW</p>
+      <h2 class="sec-title serif">三种进入回忆的方式</h2>
+      <p class="sec-sub">不管素材有多少，总有适合你的入口：导入素材 → 构建画像 → 进入回忆 → 沉浸对话 → 温柔结束。</p>
+    </div>
+    <div class="ways-grid">
+      <div class="way">
+        <p class="idx">壹</p>
+        <h4>有素材 · 导入构建</h4>
+        <p>上传微信聊天记录、纯文本对话，AI 自动构建 TA 的人物画像，进入宿命 / 逆转对话。这是主流程。</p>
+      </div>
+      <div class="way">
+        <p class="idx">贰</p>
+        <h4>只有记忆 · 书写回忆录</h4>
+        <p>有些回忆只存在于心里。引导式书写 + AI 温柔追问，帮你想起更多细节，让记忆逐渐清晰。</p>
+      </div>
+      <div class="way">
+        <p class="idx">叁</p>
+        <h4>独白模式 · 与过去的自己</h4>
+        <p>日记、随笔、自我记录——构建「过去的我」的画像，和某个时期的自己重新说说话。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 两种模式 ===== -->
+<section id="modes">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-no">03 · MODES</p>
+      <h2 class="sec-title serif">回去，还是重新选择？</h2>
+      <p class="sec-sub">进入回忆时，你可以选择以怎样的方式，再一次走进那段时光。</p>
+    </div>
+    <div class="mode-grid">
+      <div class="mode">
+        <h4 class="serif">宿命模式</h4>
+        <p>你可以回去，可以重新走一遍，但改变不了什么——该发生的还是会发生。</p>
+        <p class="note">一种「温柔的残忍」：让你重新经历，也让你接受过去。</p>
+      </div>
+      <div class="mode">
+        <h4 class="serif">逆转模式</h4>
+        <p>你可以在某些节点做出不同选择，看看「如果当时…」会怎样。</p>
+        <p class="note">它有边界：只能在记忆涉及的范围内分支——这终究是回忆，不是平行宇宙。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 隐私 ===== -->
+<section id="trust">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-no">04 · PRIVACY</p>
+      <h2 class="sec-title serif">你的记忆，只属于你</h2>
+    </div>
+    <div class="trust">
+      <h3>隐私与伦理承诺</h3>
+      <ul>
+        <li><strong>本地优先</strong>——数据不上传任何服务器，全部存储在你的电脑上</li>
+        <li><strong>不编造、只留存</strong>——AI 不替你编造记忆，只陪你把回忆留住</li>
+        <li><strong>自带密钥（BYOK）</strong>——模型调用可用你自己的 Key，自主可控</li>
+        <li><strong>随时导出</strong>——回忆记录、回忆录可导出 txt / PDF / HTML</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 路线 ===== -->
+<section id="roadmap">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-no">05 · ROADMAP</p>
+      <h2 class="sec-title serif">从「对话」走向「走进回忆」</h2>
+    </div>
+    <div class="road">
+      <div class="stop">
+        <p class="ver">V2</p>
+        <h4>回忆体验装置</h4>
+        <p>宿命 / 逆转 / 独白 / 回忆录四种方式全部可用，本地运行。</p>
+        <span class="state">● 已完成</span>
+      </div>
+      <div class="stop">
+        <p class="ver">V3</p>
+        <h4>回忆空间</h4>
+        <p>素材拼贴的可探索房间，与 V2 对话联动。</p>
+        <span class="state">○ 开发中</span>
+      </div>
+      <div class="stop">
+        <p class="ver">V4</p>
+        <h4>回忆漫游</h4>
+        <p>第一人称「走进去」的空间漫游，空间里的人会和你对话。</p>
+        <span class="state">○ 愿景</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 结尾 ===== -->
+<section class="closing">
+  <div class="wrap">
+    <p class="big serif">愿每一个「如果当时」，<br>都能被温柔地接住。</p>
+    <p>忆光匣 · 本地回忆体验装置</p>
+    <div class="cta-row" style="justify-content:center;">
+      <a class="btn btn-solid" href="#why">重新了解忆光匣</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>MEMORY LIGHT BOX · 忆光匣</span>
+    <span>数据本地 · 不编造 · 只留存</span>
+  </div>
+</footer>
+
+</body>
+</html>
